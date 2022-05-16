@@ -17,12 +17,13 @@ class signalrClient {
   /**
    * @param {String} url
    * @param {string[]} hubs
+   * @param agent
    */
-  constructor(url, hubs) {
+  constructor(url, hubs, agent = false) {
     this.url = url
     this.qs = {}
     this.headers = {}
-    this.agent = false
+    this.agent = agent
     this.reconnectDelayTime = 5000
     this.requestTimeout = 5000
     this.callTimeout = 5000
@@ -142,7 +143,8 @@ class signalrClient {
     })
     let ws = new websocketClient(`${url}/connect?${query}`, {
       handshakeTimeout: this.requestTimeout,
-      headers: this.headers
+      headers: this.headers,
+        agent: this.agent
     })
     ws.onopen = (event) => {
       this._invocationId = 0
